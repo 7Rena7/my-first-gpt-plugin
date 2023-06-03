@@ -1,0 +1,126 @@
+openapi: 3.0.1
+
+info: 
+  title: ChatGPT Plugin Todo API
+  version: 1.0.0
+  description: API specification for ChatGPT Plugin Todo API
+
+paths: 
+  /todos:
+    get: 
+      summary: Get all todos
+      operationId: getTodos
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties:
+                  todos:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Todo'
+    post: 
+      summary: Create a todo
+      operationId: createTodos
+      requestBody: 
+        required: true
+        description: Todo object to be created
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoInput'
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Todo'
+
+  /todos/{id}:
+    get: 
+      summary: Get a todo by id
+      operationId: getTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the todo to be retrieved
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Todo'
+
+    put: 
+      summary: Update a todo by id
+      operationId: updateTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the todo to be updated
+          schema:
+            type: string
+      requestBody: 
+        required: true
+        description: Todo object to be updated
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoInput'
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Todo'
+    
+    delete: 
+      summary: Delete a todo by id
+      operationId: deleteTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the todo to be deleted
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              type: object
+              properties: 
+                ok: 
+                  type: boolean
+
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id: 
+          type: string
+        title: 
+          type: string
+      required:
+        - id
+        - title
+
+    TodoInput:
+      type: object
+      properties:
+        title: 
+          type: string
+      required:
+        - title
